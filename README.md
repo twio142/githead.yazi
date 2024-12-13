@@ -1,3 +1,7 @@
+An update of the original [githead.yazi](https://github.com/llanosrocas/githead.yazi), with adaptations to yazi v0.4.
+
+---
+
 # githead.yazi
 
 Git status header for yazi inspired by [powerlevel10k](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#what-do-different-symbols-in-git-status-mean).
@@ -77,9 +81,9 @@ require("githead"):setup({
 - [x] Behind/Ahead of the remote
 - [x] Stashes
 - [x] States
-  - [x] merge
-  - [x] cherry
-  - [x] rebase (+ done counter)
+    - [x] merge
+    - [x] cherry
+    - [x] rebase (+ done counter)
 - [x] Staged
 - [x] Unstaged
 - [x] Untracked
