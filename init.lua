@@ -1,14 +1,14 @@
 ---@diagnostic disable: undefined-global
 
-local save = ya.sync(function(st, cwd, output)
+local save = ya.sync(function(this, cwd, output)
 	if cx.active.current.cwd == Url(cwd) then
-		st.output = output
+		this.output = output
 		ya.render()
 	end
 end)
 
 return {
-	setup = function(st, options)
+	setup = function(this, options)
 		options = options or {}
 
 		local config = {
@@ -207,7 +207,7 @@ return {
 		end
 
 		function Header:githead()
-			local status = st.output
+			local status = this.output
 			local branch = config.show_branch and self:get_branch(status) or ""
 			local behind_ahead = config.show_behind_ahead and self:get_behind_ahead(status) or ""
 			local stashes = config.show_stashes and self:get_stashes(status) or ""
@@ -228,32 +228,32 @@ return {
 		end
 
 		Header:children_add(Header.githead, 2000, Header.LEFT)
-		-- Pass current working directory and custom config path (if specified) to the plugin's entry point
-		---Callback for subscribers to update the prompt
+
 		local callback = function()
 			local cwd = cx.active.current.cwd
-			if st.cwd ~= cwd then
-				st.cwd = cwd
+
+			if this.cwd ~= cwd then
+				this.cwd = cwd
 				ya.manager_emit("plugin", {
-					st._id,
+					this._id,
 					args = ya.quote(tostring(cwd), true),
 				})
 			end
 		end
 
-		-- Subscribe to events
 		ps.sub("cd", callback)
 		ps.sub("tab", callback)
 	end,
 
-	entry = function(_, job_or_args)
-		local args = job_or_args.args or job_or_args
+	entry = function(_, job)
+		local args = job.args or job
 		local command = Command("git")
 			:args({ "status", "--ignore-submodules=dirty", "--branch", "--show-stash", "--ahead-behind" })
 			:cwd(args[1])
 			:env("LANGUAGE", "en_US.UTF-8")
 			:stdout(Command.PIPED)
 		local output = command:output()
+
 		if output then
 			save(args[1], output.stdout)
 		end
