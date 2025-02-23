@@ -240,7 +240,7 @@ return {
 				this.cwd = cwd
 				ya.manager_emit("plugin", {
 					this._id,
-					args = ya.quote(tostring(cwd), true),
+					ya.quote(tostring(cwd), true),
 				})
 			end
 		end
